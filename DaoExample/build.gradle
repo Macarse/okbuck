@@ -1,0 +1,28 @@
+apply plugin: 'com.android.application'
+apply plugin: 'org.greenrobot.greendao'
+
+android {
+    defaultConfig {
+        applicationId "org.greenrobot.greendao.example"
+        minSdkVersion 15
+        targetSdkVersion 25
+        versionCode 1
+        versionName "3"
+
+        testInstrumentationRunner "android.test.InstrumentationTestRunner"
+    }
+}
+
+greendao {
+    schemaVersion 1000
+}
+
+dependencies {
+    compile 'org.greenrobot:greendao:3.1.0'
+
+    // This is only needed if you want to use encrypted databases
+    compile 'net.zetetic:android-database-sqlcipher:3.5.4'
+
+    compile 'com.android.support:appcompat-v7:25.0.1'
+    compile 'com.android.support:recyclerview-v7:25.0.1'
+}

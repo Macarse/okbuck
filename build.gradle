@@ -10,6 +10,7 @@ buildscript {
         classpath deps.build.retrolambdaPlugin
         classpath deps.build.sqlDelightPlugin
         classpath deps.build.shadowJar
+        classpath 'org.greenrobot:greendao-gradle-plugin:3.1.0'
     }
 }
 
@@ -103,6 +104,20 @@ def addCommonConfigurationForAndroidModules(Project project) {
             Task sqlDelightTask = project.tasks.getByName("generate${it.name.capitalize()}SqlDelightInterface")
             okbuckTask.dependsOn(sqlDelightTask)
             project.android.sourceSets."${it.name}".java.srcDirs += [sqlDelightTask.outputs.files[0] as String]
+        }
+    }
+
+    if (project.plugins.hasPlugin('org.greenrobot.greendao')) {
+
+        def taskGraph = project.getGradle().getTaskGraph()
+        taskGraph.whenReady {
+            println "registering greendao tasks for ${project.name}"
+
+            Task greendaoPrepareTask = project.tasks.getByName("greendaoPrepare")
+            Task greendaoTask = project.tasks.getByName("greendao")
+
+            okbuckTask.dependsOn(greendaoPrepareTask)
+            okbuckTask.dependsOn(greendaoTask)
         }
     }
 }
